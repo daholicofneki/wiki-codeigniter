@@ -6,8 +6,11 @@ class Login extends MY_Controller{
     
     public function index ()
     {
+        $this->load->helper('form');
+        
         if ($_POST)
         {
+            $this->load->library('form_validation');
             $this->form_validation->set_rules('username','Username','trim|required');
             $this->form_validation->set_rules('password','Password','trim|required');
             
@@ -15,7 +18,7 @@ class Login extends MY_Controller{
             {   
                 if ($this->auth_m->login())
                 {
-                    setSucces('User finded');
+                    redirect('welcome');
                 }
                 else
                 {

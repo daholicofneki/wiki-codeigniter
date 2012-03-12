@@ -5,6 +5,11 @@ body {
   padding-top: 60px;
   background-color: #fff;
 }
+.page-header {
+  padding-bottom: 5px;
+  margin: 18px 0;
+  border-bottom: 1px solid #eeeeee;
+}
 
 /* Faded out hr */
 hr.soften {
@@ -49,6 +54,7 @@ hr.soften {
   letter-spacing: -1px;
   line-height: 1;
 }
+
 .masthead h1,
 .masthead p {
   text-align: center;
@@ -80,4 +86,13 @@ hr.soften {
   font-size: 12px;
   margin-bottom: 0;
   color: #555;
+}
+
+/* Wikis Project
+-------------------------------------------------- */
+#project {
+  
+}
+#project h1, #project h2 {
+  text-align: center;
 }

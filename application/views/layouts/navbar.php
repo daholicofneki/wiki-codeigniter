@@ -2,16 +2,23 @@
     <div class="navbar-inner">
       <div class="container">
             <ul class="nav">
-                <li></li>
-                <li><?php echo anchor('berita','<i class="icon-home icon-white"></i> </a>');?></li>
+                <li><?php echo anchor('','<i class="icon-home icon-white"></i>');?></li>
+                
+                <?php if ($this->auth_m->is_secure()):?>
+                    <li><?php echo anchor('project','Wiki Project');?></li>
+                
+                <?php endif;?>
             </ul>
             
             <ul class="nav pull-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">New  <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><?php echo anchor('accounts/profile','New Project');?></li>
-                        <li><?php echo anchor('accounts/logout','New Page');?></li>
+                        <?php if($this->uri->segment(1) === 'project'):?>
+                            <li><?php echo anchor('project/insert','New Project');?></li>
+                        <?php else:?>
+                            <li><?php echo anchor('accounts/logout','New Page');?></li>
+                        <?php endif;?>
                     </ul>
                 </li>
                 <li class="dropdown">

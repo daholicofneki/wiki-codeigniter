@@ -6,6 +6,7 @@
         with Lightweight and dynamic
     </p>
 </div>
+<hr class="soften">
 <div class="marketing">
     <p>
         Create and publish your own wikis. Use these web services to communicate and collaborate with your friends and coworkers. 
