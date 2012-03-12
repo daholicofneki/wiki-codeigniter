@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Auth_m extends MY_Model {
+class Auth_m extends CI_Model {
     
     /**
      * Session key
@@ -55,39 +55,19 @@ class Auth_m extends MY_Model {
      * @param   string  login tipe
      * return void
      */
-    public function login ($login)
+    public function login ()
     {
-        if ($login === 'sekolah')
-        {
-            $query = $this->db
-                        ->from('sekolah_pass')
+        $query = $this->db
+                        ->from('user')
                         ->where('username', $this->input->post('username'))
                         ->where('password', md5($this->input->post('password')))
+                        ->limit(1)
                         ->get();
-        }
-        elseif ($login === 'asesor')
-        {
-            $query = $this->db
-                        ->from('asesor_team')
-                        ->where('username', $this->input->post('username'))
-                        ->where('password', md5($this->input->post('password')))
-                        ->get();
-        }
-        elseif ($login === 'administrator')
-        {
-            $query = $this->db
-                        ->from('uwong')
-                        ->join('provinsi','id_provinsi = idx_provinsi')
-                        ->where('username', $this->input->post('username'))
-                        ->where('password', md5($this->input->post('password')))
-                        ->get();   
-        }
         
         // cek there is a record
         if ($query->num_rows() > 0)
         {
             $this->session->set_userdata($this->key, $query->row_array());
-            $query->free_result();
             return TRUE;
         }
         else
@@ -105,7 +85,6 @@ class Auth_m extends MY_Model {
     {
         $data = $this->session->userdata($this->key);
         return $data[$userdata];
-        //return (object) $this->session->userdata($this->key);
     }
     
     /**

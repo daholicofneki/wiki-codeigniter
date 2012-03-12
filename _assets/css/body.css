@@ -1,0 +1,83 @@
+/* Body and structure
+-------------------------------------------------- */
+body {
+  position: relative;
+  padding-top: 60px;
+  background-color: #fff;
+}
+
+/* Faded out hr */
+hr.soften {
+  height: 1px;
+  margin: 54px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  border: 0;
+}
+
+/* Tweak navbar brand link to be super sleek
+-------------------------------------------------- */
+.navbar-fixed-top .brand {
+  padding-right: 0;
+  padding-left: 0;
+  margin: 0 auto;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  -webkit-transition: all .2s linear;
+     -moz-transition: all .2s linear;
+          transition: all .2s linear;
+}
+.navbar-fixed-top .brand:hover {
+  text-decoration: none;
+}
+
+
+/* Welcome
+-------------------------------------------------- */
+/* Masthead (docs home) */
+.masthead {
+  padding-top: 36px;
+  margin-bottom: 72px;
+}
+.masthead h1 {
+  margin-bottom: 9px;
+  font-size: 81px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.masthead h1,
+.masthead p {
+  text-align: center;
+}
+.masthead h1 {
+  margin-bottom: 18px;
+}
+.masthead p {
+  margin-left: 5%;
+  margin-right: 5%;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+/* marketing
+-------------------------------------------------- */
+.marketing p {
+    text-align: center;
+}
+
+/* Footer
+-------------------------------------------------- */
+.footer {
+  margin-top: 45px;
+  padding: 10px 0 36px;
+  border-top: 1px solid #e5e5e5;
+}
+.footer p {
+  font-size: 12px;
+  margin-bottom: 0;
+  color: #555;
+}

@@ -33,7 +33,6 @@ class MY_Controller extends CI_Controller {
                 
                 // load spark
 		$this->load->spark('template/1.9.0');
-		
 
                 $this->method   = ucwords(preg_replace('/[_]+/', ' ', strtolower(trim($this->router->fetch_method()))));
 		
