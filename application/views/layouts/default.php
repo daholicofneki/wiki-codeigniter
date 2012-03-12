@@ -12,7 +12,6 @@
         <![endif]-->
     </head>
     <body>
-	<a href="https://github.com/purwandi/siberol"><img style="position: absolute; z-index: 10000; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 	<?php require ('navbar.php');?>
 	<div class="container">
 	    <?php echo $template['body']; ?>

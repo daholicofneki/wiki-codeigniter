@@ -19,8 +19,8 @@
  */
 class MY_Controller extends CI_Controller {
         
-        public  $params = array ();
-        public  $module = '';
+        protected  $params = array ();
+        protected  $module = '';
         public	$model 	= '';
 	
         /**

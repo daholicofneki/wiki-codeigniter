@@ -27,6 +27,8 @@
 
 class Welcome extends MY_Controller {
 
+	protected $module = 'welcome';
+	
 	/**
 	 * Index Page for this controller.
 	 *
@@ -44,7 +46,7 @@ class Welcome extends MY_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		parent :: index ();
 	}
 }
 
