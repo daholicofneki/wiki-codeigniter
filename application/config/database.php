@@ -71,8 +71,18 @@
 | The $active_record variables lets you determine whether or not to load
 | the active record class
 */
+switch (ENVIRONMENT) {
+        case 'development':
+                $active_group = 'default';
+                break;
+        case 'staging':
+                $active_group = 'staging';
+                break;
+        default:
+                $active_group = 'production';
+                break;
+}
 
-$active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['dsn']      = '';
@@ -92,6 +102,23 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 $db['default']['failover'] = array();
+
+$db['production']['hostname'] = 'tunnel.pagodabox.com';
+$db['production']['port']     = '3306';
+$db['production']['username'] = 'elizabet';
+$db['production']['password'] = 'SvxXhLuw';
+$db['production']['database'] = 'shanti';
+$db['production']['dbdriver'] = 'mysql';
+$db['production']['dbprefix'] = '';
+$db['production']['pconnect'] = TRUE;
+$db['production']['db_debug'] = FALSE;
+$db['production']['cache_on'] = TRUE;
+$db['production']['cachedir'] = '';
+$db['production']['char_set'] = 'utf8';
+$db['production']['dbcollat'] = 'utf8_general_ci';
+$db['production']['swap_pre'] = '';
+$db['production']['autoinit'] = TRUE;
+$db['production']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

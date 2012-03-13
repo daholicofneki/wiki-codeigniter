@@ -42,7 +42,17 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', 'development');
+	switch (dirname(__FILE__)) {
+		case '/Volumes/Storage/www/codeigniter/wiki':
+			define('ENVIRONMENT', 'development');
+			break;
+		case 'C:\xampp\htdocs\ratu':
+			define('ENVIRONMENT', 'staging');
+			break;
+		default:
+			define('ENVIRONMENT', 'production');
+			break;
+	}
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
