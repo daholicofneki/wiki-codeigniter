@@ -15,23 +15,16 @@
             </ul>
             
             <ul class="nav pull-right">
+                <?php if ($this->auth_m->is_secure()):?>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">New  <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <?php echo $this->auth_m->data('full_name');?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <?php if($this->uri->segment(1) === 'project'):?>
-                            <li><?php echo anchor('project/insert','New Project');?></li>
-                        <?php else:?>
-                            <li><?php echo anchor('accounts/logout','New Page');?></li>
-                        <?php endif;?>
+                        <li><?php echo anchor('auth/logout','Logout');?></li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><?php echo anchor('accounts/profile','Profile');?></li>
-                        <li><?php echo anchor('accounts/logout','Logout');?></li>
-                    </ul>
-                </li>
+                <?php else:?>
+                    <li><?php echo anchor('auth/index','Login');?></li>
+                <?php endif;?>
             </ul>
       </div>
     </div>

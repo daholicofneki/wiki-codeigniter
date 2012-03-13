@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Login extends MY_Controller{
+class Auth extends MY_Controller{
     
     protected $module = 'login';
     
@@ -27,5 +27,10 @@ class Login extends MY_Controller{
             }
         }
         parent :: index ();
+    }
+    public function logout()
+    {
+        $this->auth_m->logout();
+        redirect ('welcome');
     }
 }

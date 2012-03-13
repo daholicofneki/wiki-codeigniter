@@ -26,3 +26,5 @@
         <?php endforeach;?>
     </tbody>
 </table>
+
+<?php echo anchor('project/insert','New Project','class="btn btn-primary"');?>
