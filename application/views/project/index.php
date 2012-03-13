@@ -13,7 +13,7 @@
         <?php foreach ($p as $p):?>
         <tr>
             <td>
-                <h4><?php echo $p->name;?></h4>
+                <h4><?php echo anchor('page/index/'.$p->slug,$p->name);?></h4>
                 <p>
                     <small><?php echo $p->description;?></small>
                 </p>
