@@ -109,9 +109,7 @@ hr.soften {
   margin: 20px 0 20px 0;
 }
 
-#wiki h3,
-#wiki h4 {
-  border-bottom: 1px solid #EFEFEF;
+#wiki h3, #wiki h4 {
   padding-bottom: 3px;
   margin: 20px 0 10px 0;
 }
