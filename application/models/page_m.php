@@ -11,7 +11,7 @@ class Page_m extends MY_Model {
     
     public function _run_before_update ()
     {
-        $this->db->set('project_id', $project);
+        $this->db->set('project_id', $this->input->post('project_id'));
         $this->db->set('user_id', $this->auth_m->data('id'));
         $this->db->set('slug', strips_text($this->input->post('name')));
     }

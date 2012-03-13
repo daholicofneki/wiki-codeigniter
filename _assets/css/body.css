@@ -115,15 +115,10 @@ hr.soften {
 }
 
 #wiki #name{
-  border: 1px solid #EFEFEF;
   min-height: 20px;
   font-size: 20px;
-  padding: 8px;
 }
 
 #wiki #body{
-  margin-top: 8px;
-  padding: 8px;
-  border: 1px solid #EFEFEF;
   min-height: 500px;
 }

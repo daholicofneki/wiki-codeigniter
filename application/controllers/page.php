@@ -11,8 +11,8 @@ class Page extends MY_Controller{
         $this->load->model(array('project_m','page_m'));
         
         $this->params['tabs'] = array (
-            'wiki'  => '<i class="icon-home"></i> Home',
-            'page'  => '<i class="icon-book"></i> Page',
+            'page/index/'.$this->uri->segment(3)  => '<i class="icon-home"></i> Home',
+            'page/details/'.$this->uri->segment(3)  => '<i class="icon-book"></i> Page',
         );
     }
     
@@ -50,16 +50,16 @@ class Page extends MY_Controller{
                 {
                     if ($this->page_m->save())
                     {
-                        die ('<div id="result">Success</div>');
+                        die ('<div id="result" class="alert alert-success">Success</div>');
                     }
                     else
                     {
-                        die ('<div id="result">Cannot save</div>');
+                        die ('<div id="result" class="alert">Cannot save</div>');
                     }
                 }
                 else
                 {
-                    die ('<div id="result">Cannot save</div>');
+                    die ('<div id="result" class="alert">Cannot save</div>');
                 }
             }
             else
@@ -84,17 +84,15 @@ class Page extends MY_Controller{
             {
                 if ($this->page_m->valid())
                 {
-                    // update last data
-                    $this->db->update('page',array('status' => 0),array('id'=>$this->input->post('id')));
                     
-                    // insert a new
-                    if ($this->page_m->save())
+                    // update
+                    if ($this->page_m->save($this->input->post('id')))
                     {
-                        setSucces('Updated');
+                        redirect ('page/index/'.$this->input->post('slug').'/'.strips_text($this->input->post('name')));
                     }
                     else
                     {
-                        setError('Can not save');
+                        die ('<div id="result" class="alert">Cannot save</div>');
                     }
                 }
             }
@@ -104,10 +102,23 @@ class Page extends MY_Controller{
                 $this->params['page'] = $page;
                 parent :: update('update');
             }
-            
-            
         }
         
+    }
+    
+    public function details ($slug)
+    {
+        $p = $this->project_m->row('',array('slug'=> $slug));
+        
+        if ($p)
+        {
+            $this->params['project'] = $p;
+            
+            $data = $this->page_m->all('',array('project_id' => $p->id,'status' => 1));
+            
+            $this->params['page'] = $data;
+            parent :: index('details');
+        }
     }
     
     public function delete ()

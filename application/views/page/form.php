@@ -1,8 +1,6 @@
-<div class="pull-right">
-    <p><small id="status">All changes is saved</small></p>
-</div>
+<h1><?php echo $project->name;?></h1>
+<p><small id="status"><?php echo $project->description;?></small></p>
 
-<h1 style="margin-bottom: 25px;"><?php echo $project->name;?></h1>
 <ul class="breadcrumb">
     <li><?php echo anchor('','Wikis');?> <span class="divider">/</span></li>
     <li><?php echo anchor('page/index/'.$project->slug,$project->name);?> <span class="divider">/</span></li>
@@ -11,27 +9,12 @@
 
 <div id="wiki">
     <div id="result"></div>
-    <div id="name" contenteditable="true"></div>
-    <div id="body" contenteditable="true"></div>
+    <?php echo form_open();?>
+        <?php echo form_text('Page name','name','','class="span12"');?>
+        <?php echo form_area('Page body','body','','row="30" class="span12"');?>
+        <div class="form-actions">
+            <?php echo form_button('submit','Save changes','id="form" class="btn btn-success"');?>
+            <?php echo form_button('reset','Preview','class="btn"');?>
+        </div>
+    <?php echo form_close();?>
 </div>
-
-<div class="form-actions">
-    <?php echo anchor('','Save changes','id="form" class="btn btn-success"');?>
-    <?php echo anchor('','Preview','class="btn"');?>
-</div>
-<script>
-    !function( $ ){
-        $('#form').click(function(){
-            $.ajax ({
-                type : 'post',
-                data: 'project_id=<?php echo $project->id;?>&name='+$('#name').html()+'&body='+$('#body').html(),
-                url  : '<?php echo current_url();?>',
-                success	        : function(data){
-                    $('#result').replaceWith(data);
-                },
-                error           : function (){alert("Error calling ajax");hide_load();}
-            });
-            return false;
-        })
-    }( window.jQuery );
-</script>

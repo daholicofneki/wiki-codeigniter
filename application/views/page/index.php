@@ -1,12 +1,10 @@
-<div class="pull-right">
-    <p><small id="status">All changes is saved</small></p>
-</div>
-<h1 style="margin-bottom: 25px;"><?php echo $project->name;?></h1>
+<h1><?php echo $project->name;?></h1>
+<p><small id="status"><?php echo $project->description;?></small></p>
 
 <ul class="breadcrumb">
-    <li><?php echo anchor('','Wikis');?> <span class="divider">/</span></li>
+    <li><?php echo anchor('project','Wikis');?> <span class="divider">/</span></li>
     <li><?php echo anchor('page/index/'.$project->slug,$project->name);?> <span class="divider">/</span></li>
-    <li class="active">Data</li>
+    <li class="active">Welcome</li>
 </ul>
 
 <ul class="nav nav-tabs">
