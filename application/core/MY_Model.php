@@ -23,8 +23,8 @@
  
 class MY_Model extends CI_Model {
      
-	public $tableName;
-	public $idx;
+	public $table;
+	public $idx = 'id';
 	public $fields = array ();
 	public $has_relations = array ();
 	private $query;
@@ -47,9 +47,10 @@ class MY_Model extends CI_Model {
 	// set cunstructor
 	public function __construct ()
 	{
-		$CI = & get_instance ();
-		$this->db = $CI->db;
-		unset ($CI);
+	    parent ::__construct();
+            $CI = & get_instance ();
+	    $this->db = $CI->db;
+	    unset ($CI);
 	}
 	 
 	 
@@ -65,23 +66,24 @@ class MY_Model extends CI_Model {
 	 */
 	public function valid ($ignoreField = FALSE)
 	{
+            $this->load->library('form_validation');
 		
-		foreach ($this->fields as $key=>$values)
-		{
-			if (is_array($ignoreField) && in_array($key,$ignoreField)) continue;
-			 
-			$rules = 'trim';
-			 
-			if (count($values) > 1)
-			{
-				if ( $values[1] ) $rules .= '|required';
-				if ( isset($values[2]) ) $rules .= '|'.$values[2];
-			}
-				 
-			$this->form_validation->set_rules($key, $values[0], $rules);
-		}
-                
-		return $this->form_validation->run();
+            foreach ($this->fields as $key=>$values)
+            {
+                if (is_array($ignoreField) && in_array($key,$ignoreField)) continue;
+                 
+                $rules = 'trim';
+                 
+                if (count($values) > 1)
+                {
+                        if ( $values[1] ) $rules .= '|required';
+                        if ( isset($values[2]) ) $rules .= '|'.$values[2];
+                }
+                         
+                $this->form_validation->set_rules($key, $values[0], $rules);
+            }
+            
+            return $this->form_validation->run();
 	}   
 	 
 	// --------------------------------------------------------------------
@@ -95,24 +97,36 @@ class MY_Model extends CI_Model {
 	 */
 	public function save ($id = FALSE)
 	{
-		foreach ($this->fields as $key=>$values)
-		{
-			$this->db->set($key,$this->input->post($key));              
-		}
-		 
-		if ( ! empty($id))
-		{
-			$this->db->where($this->idx,$id);
-			$this->db->update($this->tableName);
-		}
-		 
-		else
-		{
-			$this->db->insert($this->tableName);
-		}
-		return ($this->db->affected_rows() == 1);
+            foreach ($this->fields as $key=>$values)
+            {
+                $this->db->set($key,$this->input->post($key));              
+            }
+            
+            if ( ! empty($id))
+            {
+                $this->_run_before_update ();
+                $this->db->set('updated_at',time());
+                $this->db->where($this->idx,$id);
+                $this->db->update($this->table);
+                $this->_run_after_update ();
+            }
+             
+            else
+            {
+                $this->_run_before_insert ();
+                $this->db->set('created_at',time());
+                $this->db->insert($this->table);
+                $this->_run_after_insert ();
+            }
+            
+            return ($this->db->affected_rows() == 1);
 	}
-	     
+	
+        public function _run_before_update (){}
+        public function _run_before_insert (){}
+        public function _run_after_update (){}
+        public function _run_after_insert (){}
+        
 	// --------------------------------------------------------------------
 	 
 	/**
@@ -129,18 +143,17 @@ class MY_Model extends CI_Model {
                 
 		if ($id)
 		{
-			$this->db->where($this->idx,$id);
-			return $this->row($this->tableName);
+		    $this->db->where($this->idx,$id);
+		    return $this->row($this->table);
 		}
 		else
 		{
-			if ($page >= 0 )
-			{
-				$this->db->limit('25', $page );
-			}
-			return $this->all($this->tableName);
+                    if ($page >= 0 )
+                    {
+                        $this->db->limit('25', $page );
+                    }
+                    return $this->all($this->table);
 		}
-		 
 	}
 	 
 	// --------------------------------------------------------------------
@@ -153,7 +166,7 @@ class MY_Model extends CI_Model {
 	 */
 	public function count_record()
 	{
-		return $this->db->count_all_results($this->tableName); 
+		return $this->db->count_all_results($this->table); 
 	}                   
 	 
 	// --------------------------------------------------------------------
@@ -167,12 +180,11 @@ class MY_Model extends CI_Model {
 	 */
 	public function delete($id = FALSE)
 	{
-		if ($id)
-		{
-			$this->db->where($this->idx,$id);
-			return $this->db->delete($this->tableName);
-		}
-	     
+            if ($id)
+            {
+                $this->db->where($this->idx,$id);
+                return $this->db->delete($this->table);
+            }
 	}
 	 
 	// --------------------------------------------------------------------
@@ -185,14 +197,14 @@ class MY_Model extends CI_Model {
 	 */
 	public function labels()
 	{
-		$labels = array();
-		 
-		foreach ( $this->fields as $key=>$value )
-		{
-			$labels[$key] = $value[0];
-		}
-		 
-		return (object) $labels;
+            $labels = array();
+             
+            foreach ( $this->fields as $key=>$value )
+            {
+                $labels[$key] = $value[0];
+            }
+             
+            return (object) $labels;
 	}
 	 
 	// --------------------------------------------------------------------
@@ -210,7 +222,7 @@ class MY_Model extends CI_Model {
 		if ( ! empty($field) AND ! empty($id))
 		{
 			$this->db->where($field, $id);
-			return $this->row($this->tableName);
+			return $this->row($this->table);
 		}
 	     
 	}
@@ -226,14 +238,12 @@ class MY_Model extends CI_Model {
 	 */
 	public function error_message($error = FALSE)
 	{
-	     
-		if ( ! empty($error))
-		{
-			return $this->errorMessage .= $error.br();
-		}
-	     
+            if ( ! empty($error))
+            {
+                return $this->errorMessage .= $error.br();
+            }
 	} 
-	     
+	
 	// ----------------------------------------------------------
 	 
 	/**
@@ -245,18 +255,18 @@ class MY_Model extends CI_Model {
 	 */
 	public function cek_key ( $key, $string )
 	{
-		if ( ! empty($key) AND ! empty($string))
-		{
-		    $this->db->where( $key ,$string);
-		    if ( $this->row($this->tableName))
-		    {
-				return TRUE;
-		    }
-		    else
-		    {
-				return FALSE;
-		    }
-		}
+            if ( ! empty($key) AND ! empty($string))
+            {
+                $this->db->where( $key ,$string);
+                if ( $this->row($this->table))
+                {
+                    return TRUE;
+                }
+                else
+                {
+                    return FALSE;
+                }
+            }
 	}
 	
 	// AND HE WE GO ADO FUNCTION .......................................
@@ -284,16 +294,18 @@ class MY_Model extends CI_Model {
 	 * @param      array
 	 * @return     boolean
 	 */
-	public function row ($sql, $where = array())
+	public function row ($sql = null, $where = array())
 	{
-		if ($this->_get ($sql,$where))
-		{
-			return $this->query->row();
-		}
-		else
-		{
-			return FALSE;
-		}
+            $sql = $sql ? $sql : $this->table;
+            
+            if ($this->_get ($sql,$where))
+            {
+                return $this->query->row();
+            }
+            else
+            {
+                return FALSE;
+            }
 	}
 	 
 	/**
@@ -304,22 +316,24 @@ class MY_Model extends CI_Model {
 	 * @param      array
 	 * @return     boolean
 	 */
-	public function all ($sql, $where = array())
+	public function all ($sql = null, $where = array())
 	{
-		if ( $this->_get($sql,$where))
-		{
-			$data = array();
-			foreach ($this->query->result() as $row)
-			{
-				$data[] = $row;
-			}
-			return $data;
-		}
-		 
-		else
-		{
-			return FALSE;
-		}
+            $sql = $sql ? $sql : $this->table;
+            
+            if ( $this->_get($sql,$where))
+            {
+                $data = array();
+                foreach ($this->query->result() as $row)
+                {
+                    $data[] = $row;
+                }
+                return $data;
+            }
+             
+            else
+            {
+                return FALSE;
+            }
 	}
 	 
 	 
@@ -331,25 +345,27 @@ class MY_Model extends CI_Model {
 	 * @param      array
 	 * @return     boolean
 	 */
-	public function one ($sql,$where = array ())
+	public function one ($sql = null,$where = array ())
 	{
-		if ( $this->_get($sql,$where))
-		{
-		     
-			$arr = $this->query->row_array();
-			$val = "";
-			 
-			foreach ($arr as $a)
-			{
-				$val = $a; break;
-			}
-			 
-			return $val;
-		}
-		else
-		{
-		    return FALSE;
-		}
+            $sql = $sql ? $sql : $this->table;
+            
+            if ( $this->_get($sql,$where))
+            {
+                 
+                $arr = $this->query->row_array();
+                $val = "";
+                 
+                foreach ($arr as $a)
+                {
+                    $val = $a; break;
+                }
+                 
+                return $val;
+            }
+            else
+            {
+                return FALSE;
+            }
 	}
      
 	/**
@@ -364,34 +380,15 @@ class MY_Model extends CI_Model {
 	 */
 	private function _get ($sql, $where = array ())
 	{
-		if( (count($where) > 1) OR (!preg_match('/ /',trim($sql))))
-		{
-			$this->query = $this->db->get_where($sql,$where) or die(mysql_error());
-		}
-		else
-		{
-			$this->query = $this->db->query($sql) or die(mysql_error());
-		} 
-		     
-		return ($this->query->num_rows() > 0); 
-	}
-	 
-	/**
-	 * Relationship
-	 * 
-	 * @access     private
-	 * @return     boolean
-	 */
-	private function _relationship ()
-	{
-		if ( ! empty( $this->has_relations))
-		{
-			foreach ($this->has_relations as $value=>$item)
-			{
-				$this->db->join($item[0], $item[0].'.'.$item[1].'='. $value, $item[2]);
-			}
-		}
-		 
-		return $this;
+            if( (count($where) > 1) OR (!preg_match('/ /',trim($sql))))
+            {
+                $this->query = $this->db->get_where($sql,$where) or die(mysql_error());
+            }
+            else
+            {
+                $this->query = $this->db->query($sql) or die(mysql_error());
+            } 
+            
+            return ($this->query->num_rows() > 0); 
 	}
 }

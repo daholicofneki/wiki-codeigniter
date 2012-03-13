@@ -39,7 +39,7 @@ class MY_Controller extends CI_Controller {
 		$this->params['module']		= $this->module;
 		$this->params['method']		= $this->method;
 		
-		if (ENVIRONMENT === 'development')
+		if (ENVIRONMENT === 'development' && ! $this->input->is_ajax_request())
 		{
 			$this->load->spark('Debug-Toolbar/1.0.7');
 			$this->output->enable_profiler(TRUE);

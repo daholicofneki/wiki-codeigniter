@@ -4,53 +4,74 @@ class Project extends MY_Controller{
     
     protected $module = 'project';
     
+    public function __construct()
+    {
+        parent :: __construct();
+        
+        $this->load->model('project_m');
+    }
+    
     public function index ()
     {
-        $p = new Project_m();
-        $this->params['p'] = $p->where('user_id',$this->auth_m->data('id'))
-                                ->order_by('updated_at DESC')
-                                ->get();
+        
+        $this->params['p'] = $this->project_m->get();
         parent :: index ();
     }
     
     public function insert()
     {
         $this->load->helper(array('form','inflector'));
+        
         if ($_POST)
         {
-            $p = new Project_m();
-            
-            $p->name = $this->input->post('name');
-            $p->description = $this->input->post('description');
-            $p->slug = strips_text($this->input->post('name'));
-            $p->user_id = $this->auth_m->data('id');
-            
-            if ($p->save())
+            if ($this->project_m->valid())
             {
-                setSucces('Insert');
-            }
-            else
-            {
-                setError('Can not save');
+                if ($this->project_m->save())
+                {
+                    setSucces('Insert');
+                }
+                else
+                {
+                    setError('Can not save');
+                }
             }
         }
         
         parent :: insert();
     }
     
-    public function update ()
+    public function update ($slug)
     {
-        $this->load->helper('form');
-        if ($_POST)
+        $p = $this->project_m->row('', array('slug'=> $slug));
+        
+        if ($p)
         {
+            $this->load->helper(array('form','inflector'));
+             
+            if ($_POST)
+            {
+                if ($this->project_m->valid())
+                {
+                    if ($this->project_m->save($p->id))
+                    {
+                        setSucces('Updated');
+                    }
+                    else
+                    {
+                        setError('Can not save');
+                    }
+                }
+            }
             
+            $this->params['p'] = $p;
+            parent :: update();
         }
         
-        parent :: update();
     }
     
     public function delete ()
     {
         parent :: delete ();
     }
+    
 }

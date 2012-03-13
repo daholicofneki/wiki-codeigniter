@@ -5,8 +5,11 @@
                 <li><?php echo anchor('','<i class="icon-home icon-white"></i>');?></li>
                 
                 <?php if ($this->auth_m->is_secure()):?>
-                    <li><?php echo anchor('project','Wiki Project');?></li>
-                
+                    <?php if($this->uri->segment(1) === 'project'):?>
+                        <li><?php echo anchor('project','Wiki Project');?></li>
+                    <?php elseif ($this->uri->segment(1) === 'page'):?>
+                        <li><?php echo anchor('project',@$project->name);?></li>
+                    <?php endif;?>
                 <?php endif;?>
             </ul>
             

@@ -6,6 +6,7 @@
         <tr>
             <th>Name</th>
             <th>Last updated</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,9 @@
                 </p>
             </td>
             <td><?php echo $p->updated_at;?></td>
+            <td>
+                <?php echo anchor($module.'/update/'.$p->slug,'<i class="icon-pencil"></i> ');?>
+            </td>
         </tr>
         <?php endforeach;?>
     </tbody>
